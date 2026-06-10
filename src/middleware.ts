@@ -8,6 +8,6 @@ export default auth((req) => {
 })
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/convoys/:path*', '/join/:path*', '/settings/:path*'],
+  matcher: ['/dashboard/:path*', '/convoys/:path*', '/settings/:path*'],
   runtime: 'nodejs',
 }
