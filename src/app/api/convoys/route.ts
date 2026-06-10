@@ -21,6 +21,11 @@ export async function POST(req: Request) {
   const session = await auth()
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
+  const ALLOWED_CREATORS = ['329103914831970304']
+  if (!ALLOWED_CREATORS.includes(session.user.discordId)) {
+    return NextResponse.json({ error: 'Only authorized users can create convoys' }, { status: 403 })
+  }
+
   const { name, description, server, departure_time } = await req.json()
   if (!name?.trim()) return NextResponse.json({ error: 'name required' }, { status: 400 })
 

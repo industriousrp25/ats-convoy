@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { auth } from '@/lib/auth'
 import { createServiceClient } from '@/lib/supabase/server'
 
+const ALLOWED_CREATORS = ['329103914831970304']
+
 export default async function DashboardPage() {
   const session = await auth()
   const supabase = createServiceClient()
@@ -17,9 +19,11 @@ export default async function DashboardPage() {
     <div className="max-w-2xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Dashboard</h1>
-        <Link href="/convoys/new" className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold transition-colors">
-          New Convoy
-        </Link>
+        {ALLOWED_CREATORS.includes(session!.user.discordId) && (
+          <Link href="/convoys/new" className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold transition-colors">
+            New Convoy
+          </Link>
+        )}
       </div>
 
       <section>
