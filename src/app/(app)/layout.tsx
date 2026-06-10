@@ -8,7 +8,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="border-b border-gray-800 px-6 py-3 flex items-center justify-between">
+      <header className="border-b border-gray-800 px-4 sm:px-6 py-3 flex items-center justify-between gap-4 flex-wrap">
         <Link href="/dashboard" className="font-bold text-lg hover:text-indigo-400 transition-colors">
           ATS Convoy
         </Link>

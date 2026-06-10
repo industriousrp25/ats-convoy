@@ -47,8 +47,8 @@ export function ConvoyMap({ convoyId, initialPositions }: Props) {
       })
 
       const map = L.map(mapRef.current)
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors',
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '© OpenStreetMap © CARTO',
         maxZoom: 19,
       }).addTo(map)
       map.setView([36.7, -119.7], 6)
@@ -72,14 +72,28 @@ export function ConvoyMap({ convoyId, initialPositions }: Props) {
 
     positions.forEach((pos) => {
       const latlng = gameToLatLng(pos.x, pos.y)
+      const label = `${pos.user?.username ?? 'Driver'} — ${Math.round(pos.speed ?? 0)} km/h`
       const existing = markersRef.current.get(pos.user_id)
       if (existing) {
         existing.setLatLng(latlng)
-        existing.setTooltipContent(`${pos.user?.username ?? 'Driver'} — ${Math.round(pos.speed)} km/h`)
+        existing.setTooltipContent(label)
       } else {
-        const marker = L.marker(latlng)
+        const avatarUrl = (pos.user as { avatar_url?: string } | undefined)?.avatar_url
+        const icon = avatarUrl
+          ? L.divIcon({
+              html: `<img src="${avatarUrl}" style="width:32px;height:32px;border-radius:50%;border:2px solid #6366f1;" />`,
+              iconSize: [32, 32],
+              iconAnchor: [16, 16],
+              className: '',
+            })
+          : L.icon({
+              iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+            })
+        const marker = L.marker(latlng, { icon })
           .addTo(map)
-          .bindTooltip(pos.user?.username ?? 'Driver', { permanent: false })
+          .bindTooltip(label, { permanent: false })
         markersRef.current.set(pos.user_id, marker)
       }
     })

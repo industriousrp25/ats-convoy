@@ -5,6 +5,7 @@ import { createServiceClient } from '@/lib/supabase/server'
 import { InviteLink } from '@/components/InviteLink'
 import { RoleBadge } from '@/components/RoleBadge'
 import { PositionReporter } from '@/components/PositionReporter'
+import { DepartureCountdown } from '@/components/DepartureCountdown'
 import type { Role } from '@/types/convoy'
 import { hasPermission } from '@/lib/roles'
 
@@ -29,16 +30,18 @@ export default async function ConvoyPage({ params }: { params: Promise<{ id: str
 
   return (
     <div className="max-w-3xl mx-auto space-y-8">
-      <div className="flex items-start justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold">{convoy.name}</h1>
-          {convoy.description && <p className="text-gray-400 mt-1">{convoy.description}</p>}
+          {convoy.description && (
+            <p className="text-gray-400 mt-1 whitespace-pre-wrap">{convoy.description}</p>
+          )}
           {convoy.departure_time && (
-            <p className="text-sm text-gray-500 mt-1">
-              Departs: {new Date(convoy.departure_time).toLocaleString()}
+            <p className="text-sm mt-1">
+              <DepartureCountdown departureTime={convoy.departure_time} />
             </p>
           )}
-          {convoy.server && <p className="text-sm text-gray-500">Server: {convoy.server}</p>}
+          {convoy.server && <p className="text-sm text-gray-500 mt-0.5">Server: {convoy.server}</p>}
         </div>
         <div className="flex items-center gap-3">
           <RoleBadge role={myRole} />
