@@ -55,6 +55,7 @@ export function ConvoyMap({ convoyId, initialPositions }: Props) {
       mapInstanceRef.current = map
     })
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     return () => {
       destroyed = true
       mapInstanceRef.current?.remove()

@@ -15,7 +15,7 @@ export async function GET() {
   const result = (data ?? []).map(m => ({
     convoy_id: m.convoy_id,
     truckersmp_id: m.truckersmp_id ?? '',
-    convoy_name: (m.convoy as { name: string } | null)?.name ?? '',
+    convoy_name: (Array.isArray(m.convoy) ? m.convoy[0] : m.convoy as { name: string } | null)?.name ?? '',
   }))
 
   return NextResponse.json(result)

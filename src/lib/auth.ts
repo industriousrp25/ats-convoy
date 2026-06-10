@@ -10,7 +10,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
-    async signIn({ user, account, profile }) {
+    async signIn({ account, profile }) {
       if (account?.provider !== 'discord') return false
       const supabase = createServiceClient()
       const discordProfile = profile as { id: string; username: string; avatar: string | null }
